@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const Fruit = require('../model/fruite');
+const Fruit = require('../model/Fruite');
 const accessKey = "BJr6903XY9v4i6XQ_m2uf-sh6bpFr3ibc6TMca0VRN8";
 const fruitFact = require('../fruit-facts.json');
+
 router.get('/fruites',async(req,res)=>{
     const { name } = req.query;
     try{

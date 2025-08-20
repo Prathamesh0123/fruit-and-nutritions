@@ -1,0 +1,43 @@
+<div class="relative bg-slate-300 h-full sm:h-[88%] flex justify-center items-center">
+  <div (click)="gotoHome()" class="absolute top-4 left-4 text-white">
+    <p class="text-4xl p-3 cursor-pointer">⬅</p>
+  </div>
+
+  <ng-container *ngIf="fruitData$ | async as fruitData; else loader">
+    <!-- Card -->
+    <div class="flex flex-col sm:flex-row gap-4 cursor-pointer bg-slate-100 p-4 rounded-xl w-[90%] sm:w-[60%] h-auto">
+      
+      <!-- Left: Image + Info -->
+      <div class="flex-1">
+        <div class="w-full">
+          <img class="rounded-xl object-cover w-full max-h-60" [src]="fruitData.imageUrl" alt="">
+        </div>
+        <p class="text-emerald-600 text-2xl font-bold mt-2">{{fruitData.name}}</p>
+        <div class="pt-2 ps-1">
+          <p><span class="text-slate-600">Family</span>: {{fruitData.family}}</p>
+          <p><span class="text-slate-600">Nutrition</span>:</p>
+          <ul class="text-gray-800 list-disc list-inside">
+            <li>Calories: <span class="text-rose-500">{{fruitData.nutritions.calories}}</span></li>
+            <li>Fat: <span class="text-rose-500">{{fruitData.nutritions.fat}}</span></li>
+            <li>Sugar: <span class="text-rose-500">{{fruitData.nutritions.sugar}}</span></li>
+            <li>Carbohydrates: <span class="text-rose-500">{{fruitData.nutritions.carbohydrates}}</span></li>
+            <li>Protein: <span class="text-rose-500">{{fruitData.nutritions.protein}}</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right: Fun Fact -->
+      <div class="flex-1 bg-white rounded-xl shadow-md p-4">
+        <h3 class="text-xl font-semibold text-emerald-700">🍀 Fun Fact</h3>
+        <p class="text-gray-700 mt-2">
+          {{ fruitData.fruiteFact || "Loading a fun fact..." }}
+        </p>
+      </div>
+
+    </div>
+  </ng-container>
+
+  <ng-template #loader>
+    <div class="loader absolute left-[50%] bottom-[50%]"></div>
+  </ng-template>
+</div>

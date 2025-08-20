@@ -1,0 +1,15 @@
+<div class="flex justify-center items-center pt-24">
+    <div *ngIf="postData$ | async as post" class="relative flex flex-col items-center rounded-xl bg-gray-500 text-white">
+        <div class="max-w-[600px] h-auto ">
+            <div class="border-b text-2xl p-2 ">
+                Title: {{post.title}}
+            </div> 
+            <div class="p-2 text-xl">
+                {{post.body}}
+            </div>
+        </div>
+        <div (click)="goToHome()" class="absolute -bottom-12 bg-black hover:bg-gray-900 px-3 py-2 rounded-md cursor-pointer left-0">
+            <button>Go Back <-</button>
+        </div>
+    </div>
+</div>

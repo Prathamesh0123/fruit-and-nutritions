@@ -1,0 +1,46 @@
+<div class="relative flex flex-col bg-slate-200 justify-center items-center">
+    <div class="flex w-full mt-4 max-w-[375px] sm:max-w-lg space-x-4">
+    <input 
+        type="text" placeholder="Search for a fruit... 🍎"
+       [formControl]="searchControl"
+        class="w-full p-3 border border-gray-300 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-rose-500" 
+        >
+    <div class="relative">
+        <button 
+        (click)="addFruite()" 
+        [disabled]="showloader" 
+        class="px-4 py-2 sm:px-8 sm:py-3 rounded-md bg-gray-800 hover:bg-gray-700 text-white w-full"
+        >
+        Search
+        </button>
+
+        <!-- Loader inside button container -->
+        <div *ngIf="showloader" class="absolute inset-0 flex items-center justify-center">
+            <div class="loaderSmall w-[25px] sm:w-[40px]"></div>
+        </div>
+    </div>
+    </div>
+
+    <div class="relative h-screen pb-28 w-full grid grid-cols-2 sm:grid-cols-4 p-8 gap-3">
+        <ng-container *ngIf="filterData$ | async as fruitesData;else loading">
+            <ng-container *ngIf="fruitesData.length > 0;else noFruitFound">
+                <div (click)="getFruitDetail(fruite)" *ngFor="let fruite of fruitesData" class=" bg-rose-400 cursor-pointer rounded-xl h-52 sm:h-72"> 
+                    <div class="flex flex-col items-center cursor-pointer">
+                        <img class="rounded-t-xl h-36 sm:h-60 w-full" [src]="fruite.imageUrl" alt="">
+                        <p class="p-2 text-white text-2xl">{{fruite.name}}</p>
+                    </div>
+                </div> 
+            </ng-container>
+        </ng-container>
+        <ng-template #noFruitFound>
+            <div class="col-span-full h-72 flex justify-center items-center">
+                <p class="text-2xl text-slate-500">
+                    No fruits found. click serch button !
+                </p>
+            </div>
+        </ng-template>
+        <ng-template #loading>
+            <div class="loader absolute left-[50%] bottom-[50%]"></div>
+        </ng-template> 
+    </div>
+</div>

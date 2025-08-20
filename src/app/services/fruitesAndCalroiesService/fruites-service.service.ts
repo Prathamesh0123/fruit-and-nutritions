@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class FruitesServiceService {
-
+  baseUrl = 'https://fruit-and-nutritions.onrender.com';
   constructor(private http: HttpClient) { }
 
   //to handle data coming from of array of object stroting data in memory avoding api call untill refresh
@@ -22,7 +22,7 @@ export class FruitesServiceService {
 
     console.log('No cache found, making new API calls...');
 
-    return this.http.get<FruitesData[]>(`http://localhost:3000/api/fruites`).pipe(
+    return this.http.get<FruitesData[]>(`${this.baseUrl}/api/fruites`).pipe(
       // This is the main "assembly line"
       switchMap((fruits: FruitesData[]) => {
         if (fruits.length === 0) {
@@ -30,7 +30,7 @@ export class FruitesServiceService {
         }
         const fruitNames = fruits.map(fruit => fruit.name);//this will return the new array contains only names
 
-        return this.http.post<FruitesData[]>(`http://localhost:3000/api/getimages`, { names: fruitNames,fruitesData:fruits }).pipe(
+        return this.http.post<FruitesData[]>(`${this.baseUrl}/api/getimages`, { names: fruitNames,fruitesData:fruits }).pipe(
           // It will receive the final combined data that comes out of the switchMap.
           tap(combinedData => {
             console.log('Data combined. Caching result...');
@@ -43,12 +43,12 @@ export class FruitesServiceService {
 
 
   addFruite(name:string):Observable<FruitesData>{
-    return this.http.get<FruitesData>(`http://localhost:3000/api/fruites?name=${name}`).pipe(
+    return this.http.get<FruitesData>(`${this.baseUrl}/api/fruites?name=${name}`).pipe(
       switchMap((fruit:FruitesData)=>{
         if(!fruit){
           return EMPTY;
         }
-        return this.http.post<FruitesData>(`http://localhost:3000/api/getimages`,{fruitesData:fruit,name:fruit.name}).pipe(
+        return this.http.post<FruitesData>(`${this.baseUrl}/api/getimages`,{fruitesData:fruit,name:fruit.name}).pipe(
           tap(newFruit => {
             const currentFruites = this.fruitesDataBehaviourSubject.getValue()
             const updateFruites = [...currentFruites,newFruit];
@@ -70,7 +70,7 @@ export class FruitesServiceService {
   getFruitById(id: number): Observable<FruitesData> {
     if(this.fruitesDataBehaviourSubject.getValue().length == 0){
       console.log(`no catche found for ${id} fetching from Api`);
-      return this.http.get<FruitesData>(`http://localhost:3000/api/getfruit?id=${id}`);
+      return this.http.get<FruitesData>(`${this.baseUrl}/api/getfruit?id=${id}`);
     }
     console.log(`catche found for ${id}...`);
     return this.fruitesDataBehaviourSubject.pipe(
